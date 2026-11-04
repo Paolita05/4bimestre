@@ -21,10 +21,10 @@ app.get("/", (request, response) => {
             console.log ("error")
             return
         }
-
+        
+        response.json(data)
     }) 
 })
-sql.query(comandoSelect, (error, data) => { })
 
 app.listen(3000 , () => {
     console.log('Servidor rodando na porta 3000');
