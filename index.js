@@ -26,6 +26,21 @@ app.get("/", (request, response) => {
     }) 
 })
 
+
+app.get("/musica/:id", (request, response) => {
+    const { id } = request.params
+
+    const comandoSelect = "SELECT * FROM musicas_seunome WHERE id = ?"
+
+    sql.query(comandoSelect, [id], (error, data) => {
+        if (error) {
+            console.log(error)
+            return
+        }
+
+        response.json(data[0])
+    })
+})
 app.post("/cadastrar", (request, response) => {
     const { titulo, artista, genero, ano, duracao } = request.body
 
