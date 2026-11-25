@@ -30,7 +30,7 @@ app.get("/", (request, response) => {
 app.get("/musica/:id", (request, response) => {
     const { id } = request.params
 
-    const comandoSelect = "SELECT * FROM musicas_seunome WHERE id = ?"
+    const comandoSelect = "SELECT * FROM musicas_Paola WHERE id = ?"
 
     sql.query(comandoSelect, [id], (error, data) => {
         if (error) {
@@ -41,26 +41,26 @@ app.get("/musica/:id", (request, response) => {
         response.json(data[0])
     })
 })
+
 app.post("/cadastrar", (request, response) => {
     const { titulo, artista, genero, ano, duracao } = request.body
 
     const comandoInsert = "INSERT INTO musicas_Paola(titulo, artista, genero, ano, duracao) VALUES (?, ?, ?, ?, ?)"
  
-    sql.query(comandoInsert, [titulo, artista, genero, ano, duracao], (error) => { })
-    if ( error) {
-        console.log (error)
-        return
-    }
+    sql.query(comandoInsert, [titulo, artista, genero, ano, duracao], (error) => {
+        if (error) {
+            console.log(error)
+            return
+        }
 
-    response.status(201).json({ mensagem: "Música cadastrada com sucesso!" })
-
-
+        response.status(201).json({ mensagem: "Música cadastrada com sucesso!" })
+    })
 })
 
 app.delete("/apagar/:id", (request, response) => {
     const { id } = request.params
 
-    const comandoDelete = "DELETE FROM musicas_seunome WHERE id = ?"
+    const comandoDelete = "DELETE FROM musicas_Paola WHERE id = ?"
 
     sql.query(comandoDelete, [id], (error) => {
         if (error) {
@@ -72,9 +72,24 @@ app.delete("/apagar/:id", (request, response) => {
     })
 })
 
+app.put("/editar/:id", (request, response) => {
+    const { id } = request.params
+    const { titulo, artista, genero, ano, duracao } = request.body
+
+    const comandoUpdate = "UPDATE musicas_Paola SET titulo = ?, artista = ?, genero = ?, ano = ?, duracao = ? WHERE id = ?"
+
+    sql.query(comandoUpdate, [titulo, artista, genero, ano, duracao, id], (error) => {
+        if (error) {
+            console.log(error)
+            return
+        }
+
+        response.json({ mensagem: "Música alterada com sucesso!" })
+    })
+})
+
 app.listen(3000 , () => {
     console.log('Servidor rodando na porta 3000');
 })
 
 export default app
-
